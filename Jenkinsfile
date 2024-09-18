@@ -41,16 +41,12 @@ pipeline {
 
                 script {
                     bat '''
-                    rmdir /S /Q "D:/deployment" || true
-                    mkdir "D:/deployment"
-                    xcopy /S /E /Y "dist" "D:/deployment"
-
-                    cd /D "D:/deployment"
+                    cd /D "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\jenkins-vue-tutorial"
                     npm install -g pm2
                     pm2 stop vue-app || true  
                     pm2 start npm --name "vue-app" -- run serve -- --port 3000  
                     pm2 save 
-                    pm2 list  
+                    pm2 list 
                     '''
                 }
             }
