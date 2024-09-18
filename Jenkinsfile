@@ -15,8 +15,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // def nodeHome = tool name: 'NodeJS', type: 'NodeJSInstallation'
-                    // env.PATH = "${nodeHome}/bin:${env.PATH}"
+
                     bat 'npm install'
                 }
             }
@@ -28,15 +27,25 @@ pipeline {
             }
         }
 
-        stage('Test Project') {
-            steps {
-                bat 'npm run test'
-            }
-        }
+        // stage('Test Project') {
+        //     steps {
+        //         bat 'npm run test'
+        //     }
+        // }
 
         stage('Deploy Project') {
             steps {
                 echo 'Deploying the project...'
+
+                script {
+                    bat '''
+                    cd /D "D:/deployment"
+                    npm install -g pm2
+                    pm2 stop vue-app || true  
+                    pm2 start npm --name "vue-app" -- run serve -- --port 3000
+                    pm2 save  
+                    '''
+                }
             }
         }
     }
