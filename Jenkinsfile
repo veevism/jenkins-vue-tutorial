@@ -26,14 +26,6 @@ pipeline {
             }
         }
 
-        // stage('Test Project') {
-        //     steps {
-        //         bat 'npm run test'
-        //     }
-        // }
-
-
-
         stage('Copy Files') {
             steps {
                 script {
