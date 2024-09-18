@@ -15,7 +15,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-
                     bat 'npm install'
                 }
             }
@@ -35,19 +34,33 @@ pipeline {
 
 
 
+        stage('Copy Files') {
+            steps {
+                script {
+                    bat '''
+                    rmdir /S /Q "D:/deployment/jenkins-vue-tutorial" || true
+                    mkdir "D:/deployment/jenkins-vue-tutorial"
+                    xcopy /S /E /Y "dist" "D:/deployment/jenkins-vue-tutorial"
+                    '''
+                }
+            }
+        }
+
+
+
         stage('Deploy Project') {
             steps {
                 echo 'Deploying the project...'
 
                 script {
                     bat '''
-                    cd /D "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\jenkins-vue-tutorial"
-                    npm install -g pm2
-                    pm2 stop vue-app || true  
-                    pm2 start npm --name "vue-app" -- run serve -- --port 3000  
-                    pm2 save 
-                    pm2 list 
+                    cd /D "D:/deployment/jenkins-vue-tutorial"
                     '''
+                    // npm install -g pm2
+                    // pm2 stop vue-app || true  
+                    // pm2 start npm --name "vue-app" -- run serve -- --port 3000  
+                    // pm2 save 
+                    // pm2 list 
                 }
             }
         }
